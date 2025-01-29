@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.vict.vict_new.inquiry.dao.InquiryDao">
+    <select id="getTest" resultType="String" parameterType="com.vict.vict_new.inquiry.dto.InquiryDto">
+        SELECT sysdate FROM dual
+    </select>
+
+    <select id="selectInquiryList" parameterType="int" resultType="com.vict.vict_new.inquiry.dto.InquiryDto">
+        SELECT
+        INQUIRY_SEQ
+        ,INQUIRY_TYPE
+        ,TITLE
+        ,REGT_DATE
+        ,USE_YN
+        ,QUESTION_YN
+        FROM TB_INQUIRY
+        WHERE USE_YN = 'Y'
+        AND USER_SEQ = '1'
+        ORDER BY REGT_DATE DESC
+
+    </select>
+    <select id="selectInquiry" parameterType="int" resultType="com.vict.vict_new.inquiry.dto.InquiryDto">
+        SELECT INQUIRY_SEQ
+        ,INQUIRY_TYPE
+        ,TITLE
+        ,CONTENT
+        ,REGT_DATE
+        ,UPDATE_DATE
+        ,USER_SEQ
+        ,USE_YN
+        ,QUESTION_YN
+        ,QUESTION_DATE
+        FROM TB_INQUIRY
+        WHERE USE_YN = 'Y'
+        AND USER_SEQ = '1'
+        AND INQUIRY_SEQ = #{inquirySeq}
+    </select>
+    <insert id="insertInquiry" parameterType="com.vict.vict_new.inquiry.dto.InquiryDto">
+        INSERT INTO TB_INQUIRY(
+         INQUIRY_SEQ
+        ,INQUIRY_TYPE
+        ,TITLE
+        ,CONTENT
+        ,REGT_DATE
+        ,UPDATE_DATE
+        ,DELETE_DATE
+        ,USER_SEQ
+        ,USE_YN
+        ,QUESTION_YN
+        ,QUESTION_DATE
+        ) VALUES(
+         #{inquirySeq}
+        ,#{inquiryType}
+        ,#{title}
+        ,#{content}
+        ,sysdate
+        ,sysdate
+        ,''
+        ,1
+        ,'Y'
+        ,'N'
+        ,''
+        )
+    </insert>
+
+    <update id="updateInquiry" parameterType="com.vict.vict_new.inquiry.dto.InquiryDto" >
+        UPDATE TB_INQUIRY
+        SET TITLE    = 'TEST22'
+        ,CONTENT     = '내용임돠'
+        ,UPDATE_DATE = SYSDATE
+        WHERE    USER_SEQ = 1
+          AND INQUIRY_SEQ = 1;
+
+    </update>
+
+    <select id="getInquirySeq" resultType="int">
+        SELECT
+            NVL(MAX(INQUIRY_SEQ),0) AS SEQ
+        FROM TB_INQUIRY
+    </select>
+</mapper>

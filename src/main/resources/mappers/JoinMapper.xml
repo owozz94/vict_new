@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.vict.vict_new.join.dao.JoinDao">
+    <select id="getEmailExist" parameterType="int" resultType="com.vict.vict_new.inquiry.dto.InquiryDto">
+        SELECT NVL(
+            (SELECT 1
+                FROM TB_USER
+            WHERE USE_YN = 'Y'
+                AND EMAIL=  #{email}
+                AND ROWNUM = 1
+            ), 0) AS EXIST
+        FROM dual
+    </select>
+
+    <insert id="insertUser">
+        INSERT INTO VICT.TB_USER
+        (
+        USER_SEQ
+        ,EMAIL
+        ,NICKNAME
+        ,PASSWORD
+        ,USER_NAME
+        ,BIRTHDAY
+        ,GENDER
+        ,PHON_NUM
+        ,BLOG_URL
+        ,REG_DATE
+        ,END_DATE
+        ,LAST_LOGIN_TIME
+        ,USE_YN
+        ,SALT
+        )
+        VALUES(
+        1
+        ,'test@naver.com'
+        ,'관리자'
+        ,'1234'
+        ,'윤진영'
+        ,'19940822
+        ,2
+        ,'010-3184-0025'
+        ,'https://blog.naver.com/third_run'
+        ,TIMESTAMP '2025-01-18 16:59:22.000000'
+        ,NULL
+        ,NULL
+        , Y'
+        ,'123124'
+        );
+
+    </insert>
+</mapper>

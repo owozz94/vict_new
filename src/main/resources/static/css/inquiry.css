@@ -1,0 +1,301 @@
+html {
+  height: 100%;
+  background: pink;
+  font-family: 'Arial', sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+    min-height: 100vh;
+}
+
+.btn_submit{
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    background:#FFA3A5;
+    color: #fff;
+}
+
+.btn_cancel{
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    color:FFA3A5;
+    background:#FFFFFF;
+    border: 1px solid #FFA3A5;
+}
+
+/*InquiryForm*/
+th{
+    width:10%;
+}
+.page_title{
+    padding-top: 1%;
+    font-size: 1.5em;
+    margin-bottom: 20px;
+    border-bottom: 1px solid black;
+    text-align: left;
+    width: 50%;
+    margin: auto;
+}
+
+.tb_inquiry {
+    width:50%;
+	margin:auto;
+	margin-top:0.8%;
+}
+.phone_num_box{
+    display:flex;
+}
+.phone_num{
+    width: 71%;
+    margin-right: 1%;
+}
+
+.board_write th{
+    padding : 1%;
+}
+.board_write td {
+    padding: 7px 0;
+    box-sizing: border-box;
+}
+
+.td_content{
+    margin-top:1%;
+}
+
+#content{
+    height: 400px;
+}
+
+.inquiry_btn_div{
+    text-align: center;
+    padding-top: 0.5%;
+}
+
+/*Inquiry_list*/
+.container {
+    width: 80%;
+    background: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.title_bar {
+    display: flex;
+    justify-content: space-between; /* 양쪽 끝으로 배치 */
+    align-items: center; /* 세로 정렬 중앙 */
+    border-bottom: 1px solid black;
+}
+
+h1 {
+    font-size: 24px;
+}
+
+.link:hover {
+  text-decoration: none;
+}
+
+.btn_inquiry {
+    float: right;
+    padding: 10px 20px;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.btn_inquiry:hover {
+    background: #0056b3;
+}
+
+.inquiry_list {
+}
+
+.inquiry_item {
+    display: flex;
+    align-items: center;
+    padding: 15px 10px;
+    border-bottom: 1px solid #ddd;
+}
+.inquiry_item:hover {
+    background: #f8f9fa;
+}
+
+.inquiry_item:last-child {
+    border-bottom: none;
+}
+
+.icon {
+    width: 100px;
+    text-align: center;
+    color: #007bff;
+    font-weight: bold;
+}
+
+.inquiry_type {
+    flex: 1;
+}
+
+.title {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.details {
+    font-size: 14px;
+    color: #666;
+    margin-bottom: 5px;
+}
+
+.date {
+    font-size: 12px;
+    color: #999;
+}
+
+/*Inquiry*/
+.container_inq {
+    width: 50%;
+    height: fit-content;
+    margin: 0 auto;
+}
+.status_inquiry{
+    padding: 25px 0 30px;
+
+    }
+.sidebar {
+    width: 25%;
+    background-color: #ffffff;
+    padding: 20px;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+}
+
+.sidebar h2 {
+    font-size: 18px;
+    margin-bottom: 10px;
+}
+
+.sidebar ul {
+    list-style: none;
+    padding: 0;
+}
+
+.sidebar ul li {
+    margin: 10px 0;
+}
+
+.regt_date{
+    padding: 0 10px 0 0;
+    position: relative;
+    top: -33px;
+    float: right;
+    font-weight: 400;
+    font-size: 12px;
+    line-height: 17px;
+    text-align: right;
+    color: #999;
+}
+
+.header {
+    padding-top: 4%;
+    font-size: 1.5em;
+    margin-bottom: 20px;
+}
+
+.title_inquiry {
+    font-weight: 500;
+    font-size: 18px;
+    line-height: 26px;
+    letter-spacing: -.2px;
+    color: #222;
+    padding: 25px 0 30px;
+}
+
+.header h1 {
+    font-size: 24px;
+}
+
+.management{
+    text-align : right;
+    border-bottom: 1px solid #eee;
+    padding: 5px 0 15px;
+}
+
+.inquiry, .reply {
+    margin-bottom: 20px;
+    border-top: 2px solid #000;
+}
+
+.status_inquiry p {
+    background-color: #0078d4;
+    color: white;
+    display: inline-block;
+    padding: 5px 10px;
+    border-radius: 5px;
+    margin: 0;
+}
+
+.status_inquiry {
+    height: 50px;
+    width: 80px;
+    font-size: 12px;
+    line-height: 15px;
+    padding: 9px;
+    float: left;
+    text-align: center;
+}
+
+.status{
+    height: 50px;
+    width: 50px;
+    font-size: 12px;
+    line-height: 15px;
+    padding: 9px;
+    background: #5784f7;
+    border-radius: 100px;
+    color: #fff;
+}
+
+.content_question{
+    padding: 40px 25px 0 0;
+    word-break: break-all;
+}
+
+.inq_ul {
+    padding-left:3%;
+}
+.reply a {
+    color: #0078d4;
+    text-decoration: none;
+}
+
+.reply a:hover {
+    text-decoration: underline;
+}
+
+.content_answer{
+    background-color: #f8f8f9;
+    border-bottom: 1px solid #eee;
+    padding: 30px 40px;
+
+}
+.content_inq{
+    height:5%;
+}
+
+.help_footer{
+    text-align: center;
+    margin: 30px 0 0;
+    border: none;
+}
+
+.btn_update, .btn_delete{
+    color: #666;
+    font-size: 12px;
+}

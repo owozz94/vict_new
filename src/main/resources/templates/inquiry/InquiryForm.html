@@ -1,0 +1,50 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<link th:href="@{https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css}" rel="stylesheet">
+<link th:href="@{../css/inquiry.css}" rel="stylesheet"/>
+<script src="../js/inquiry.js" type="text/javascript"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<title>문의게시판</title>
+</head>
+<body>
+    <div class="common_layout">
+        <div class="board_write">
+            <div class="page_title">
+                <h2>1:1문의</h2>
+            </div>
+            <form name="customer_form" id="inquiry_form" method="post" onsubmit="return inquiry()" th:object="${form}">
+                <table class="tb_inquiry">
+                    <tbody>
+                    <tr>
+                        <th>문의유형</th>
+                    <td>
+                        <select name="inquiryType" id="inquiryType" class="form-control form-select ">
+                        <option value="" selected="">선택</option>
+                        <option th:value="1">회원정보</option>
+                        <option th:value="2">서비스 이용문의</option>
+                        <option th:value="3">기타</option>
+                    </select>
+                    </td>
+                    </tr>
+                    <tr>
+                        <th>제목</th>
+                        <td><input type="text" name="title" th:field="*{title}" class="form-control " placeholder="문의 제목을 입력해주세요" required></td>
+                    </tr>
+                    <tr>
+                        <th>내용</th>
+                        <td class="td_content">
+                            <textarea class="form-control content" name="content" th:field="*{content}" placeholder="문의 내용을 입력해주세요" required></textarea></td>
+                    </tr>
+                    </tbody>
+                </table>
+                <div class="inquiry_btn_div">
+                    <span class="btn_wrp">
+                        <input type="submit" class="btn_submit" value="등록">
+                        <input type="submit" class="btn_cancel" value="취소" th:onClick="goBack()" ></span>
+                </div>
+            </form>
+        </div>
+    </div>
+</body>
+</html>

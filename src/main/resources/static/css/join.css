@@ -1,0 +1,30 @@
+/*회원가입 전체 레이아웃*/
+.joinLayout{
+    background-size: 100%;
+}
+.joinInnerLayout{
+    background-size: 80%;
+    width: 30%;
+    text-align: center;
+    margin: 0 auto;
+}
+
+.row-flex{
+    display:flex;
+}
+
+.star:before{
+    content:"*"
+
+}
+
+.btn_send_code{
+    width:100%;
+    color:#FFA3A5;
+}
+label .error {
+    color: red; /* 글자 색 */
+    font-size: 12px; /* 글자 크기 */
+    margin-top: 5px; /* 위쪽 여백 */
+    display: block; /* 기본적으로 display:inline이므로 block으로 수정하여 새 줄에 표시 */
+}

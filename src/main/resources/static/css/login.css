@@ -1,0 +1,76 @@
+/*회원가입 전체 레이아웃*/
+.joinLayout{
+    background-size: 100%;
+}
+.joinInnerLayout{
+    background-size: 80%;
+    width: 30%;
+    text-align: center;
+    margin: 0 auto;
+}
+
+.row-flex{
+    display:flex;
+}
+
+.star:before{
+    content:"*"
+
+}
+
+.error {
+    display: block;
+    color: #f00;
+    border-color: #f00
+}
+
+.loginBtn{
+    width: 100%;
+    border: 1px solid #ddd;
+    border-color: #c6c6c6;
+}
+
+.sns-wrap{
+    text-align: center;
+}
+
+#sns_login .sns-naver .ico {
+    vertical-align: middle;
+    background: #1fc800 url(/img/logo/sns/sns_naver.png) no-repeat;
+    background-size: cover;
+}
+#sns_login .ico {
+    display: inline-block;
+    width: 23px;
+    height: 23px;
+}
+
+#sns_login .sns-icon {
+    display: block;
+    line-height: 35px;
+    text-align: center;
+    padding-left: 0;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    border-color: #c6c6c6;
+}
+
+#sns_login .txt {
+    display: inline-block;
+    text-align: center;
+    border: 0 none;
+    color: #333;
+    font-size: 12px;
+    font-weight: 400;
+    margin-left: 5px;
+}
+
+a:link, a:visited, a:hover, a:active, a:focus {
+    color: #000;
+    text-decoration: none;
+}
+
+.field-error {
+    color:red;
+    display:none;
+}

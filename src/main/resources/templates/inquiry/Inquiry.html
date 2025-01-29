@@ -1,0 +1,65 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<link th:href="@{https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css}" rel="stylesheet">
+<link th:href="@{../css/inquiry.css}" rel="stylesheet"/>
+<script src="../js/inquiry.js" type="text/javascript"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<title>문의게시판</title>
+</head>
+<body>
+<div class="container_inq">
+<!--    <aside class="sidebar">-->
+<!--        <h2>고객센터</h2>-->
+<!--        <ul>-->
+<!--            <li>1:1 문의</li>-->
+<!--            <li>공지사항</li>-->
+<!--            <li>서비스 가이드</li>-->
+<!--        </ul>-->
+<!--        <h2>커뮤니티</h2>-->
+<!--        <ul>-->
+<!--            <li>리뷰소식</li>-->
+<!--            <li>리뷰톡톡</li>-->
+<!--            <li>우리 친구할까요?</li>-->
+<!--        </ul>-->
+<!--    </aside>-->
+        <div class="header">
+            <p>1:1 문의</p>
+        </div>
+        <section class="inquiry">
+            <div class="title_inquiry_div">
+                <div class="status_inquiry">
+                    <div class="status"><strong th:text="${items.questionYn == 'Y' ? '답변완료':'접수대기'}"></strong></div>
+                </div>
+                <div class="title_inquiry">
+                    <span th:text ="${items.title}"></span>
+                </div>
+            </div>
+            <div class="regt_date" th:text="${items.regtDate}">
+            </div>
+
+            <div class="content_question">
+                <div class="content_inq" >
+                    <ul class="inq_ul">
+                   <li>문의유형 : <strong th:text ="${items.inquiryType == 1 ? '회원정보' : (items.inquiryType == 2 ? '서비스 이용문의' : '기타')}" >답변 완료</strong></li>
+                    </ul>
+                    <div style="white-space:pre;" class="content" th:text="${items.content}"></div>
+                </div>
+                <div class="management" >
+                        <a class="btn_update" th:href="@{/inquiry/{seq}/edit(seq=${items.inquirySeq})}">수정</a> |
+                     <a class="btn_delete" ng-click="$ctrl.submit()">삭제</a>
+                </div>
+            </div>
+        </section>
+            <div class="content_answer">
+               <p class="">안녕하세요 회원님. 레뷰입니다.</p>
+            </div>
+
+    <div class="help_footer">
+        <span>
+            <a href="/inquiry/list">목록</a>
+        </span>
+    </div>
+    </div>
+</body>
+</html>

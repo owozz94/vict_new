@@ -1,0 +1,71 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<link th:href="@{https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css}" rel="stylesheet">
+<link th:href="@{../css/login.css}" rel="stylesheet"/>
+<script src="../js/login.js" type="text/javascript"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.20.0/dist/jquery.validate.min.js"></script>
+<title>Hello</title>
+<style>
+        .container {
+            max-width: 560px;
+        }
+        .field-error {
+            border-color: #dc3545;
+            color: #dc3545;
+        }
+</style>
+</head>
+<script th:inline="javascript">
+    var message = [[${message}]];
+    if(message != null){
+        alert(message);
+    }
+
+</script>
+<body>
+<div class="joinLayout">
+    <div class="joinInnerLayout">
+        <h2>로그인</h2>
+        <form id="loginForm" method="post" th:object="${form}" onsubmit="return formValidate()" >
+            <input type="hidden" name="loginType" value="1"/>
+            <inpug th:text="#{hello}"/>
+            <div class="mb-3 row-flex">
+                <div class="" style="width:100%">
+                    <input type="text" th:field="*{email}"
+                           th:errorclass="field-error" class="form-control" placeholder="이메일">
+                    <div class="field-error" th:errors="*{email}">
+                        이메일 오류
+                    </div>
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <input type="password" th:field="*{pwd}"
+                       th:errorclass="field-error" class="form-control" placeholder="비밀번호">
+                <div class="field-error" th:errors="*{pwd}">
+                    패스워드 오류
+                </div>
+
+            </div>
+            <button class="loginBtn btn btn-outline-primary" onclick="formValidate()"> 로그인</button>
+            <div id="sns_login">
+                <div class="sns-wrap">
+                    <a href="#" onclick="naverLogin()" class="sns-icon social_link sns-naver" title="네이버 로그인">
+                        <span class="ico"></span>
+                        <span class="txt">네이버 아이디로 시작하기</span>
+                    </a>
+                </div>
+            </div>
+        </form>
+        <div class="mb-3">
+            <a href="/member/join">회원가입 하기</a>
+        </div>
+    </div>
+</div>
+
+
+</body>
+</html>
+

@@ -1,0 +1,38 @@
+<!DOCTYPE html >
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <link th:href="@{https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css}" rel="stylesheet">
+    <link th:href="@{../css/inquiry.css}" rel="stylesheet"/>
+    <script src="../js/inquiry.js" type="text/javascript"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <meta charset="UTF-8">
+    <title>문의 목록</title>
+</head>
+<body>
+<div class="container">
+    <div class="title_bar">
+        <div class="header">
+            <p>1:1 문의</p>
+        </div>
+        <button class="btn_inquiry" th:onclick="location.href='/inquiry/write'">문의하기</button>
+    </div>
+  <div class="inquiry_list">
+      <a class="link" th:href="@{/inquiry/{seq}(seq=${item.inquirySeq})}" th:each="item : ${items}" >
+      <div class="inquiry_item" >
+          <div class="icon">
+                <span th:text="${item.questionYn == 'Y' ? '답변완료' : '미답변'}"></span>
+            </div>
+            <div class="content">
+                <div class="title" th:text="${item.title}"></div>
+                <div class="inquiry_type">
+                    <span th:text="${item.inquiryType == 1 ? '회원정보' : (item.inquiryType == 2 ? '서비스 이용문의' : '기타')}"></span>
+                </div>
+                <div class="date" th:text="${item.regtDate}"></div>
+                <div class="test" th:text="${item.inquirySeq}"></div>
+            </div>
+        </div>
+      </a>
+  </div>
+</div>
+</body>
+</html>
