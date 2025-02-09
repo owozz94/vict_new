@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.vict.vict_new.join.dao.JoinDao">
-    <select id="getEmailExist" parameterType="int" resultType="com.vict.vict_new.inquiry.dto.InquiryDto">
+    <select id="getEmailExist" parameterType="string" resultType="int">
         SELECT NVL(
             (SELECT 1
                 FROM TB_USER
@@ -12,8 +12,10 @@
             ), 0) AS EXIST
         FROM dual
     </select>
-
-    <insert id="insertUser">
+    <select id="getUserSeq" resultType="int">
+        SELECT LPAD(USER_SEQ.NEXTVAL,5,0) FROM DUAL
+    </select>
+    <insert id="insertUser" parameterType="com.vict.vict_new.join.dto.User" >
         INSERT INTO VICT.TB_USER
         (
         USER_SEQ
@@ -28,25 +30,27 @@
         ,REG_DATE
         ,END_DATE
         ,LAST_LOGIN_TIME
+        ,LAST_UPDATE_TIME
         ,USE_YN
         ,SALT
         )
         VALUES(
-        1
-        ,'test@naver.com'
-        ,'관리자'
-        ,'1234'
-        ,'윤진영'
-        ,'19940822
-        ,2
-        ,'010-3184-0025'
+         #{userSeq}
+        ,#{email}
+        ,#{nickname}
+        ,#{password}
+        ,''
+        ,''
+        ,''
+        ,''
         ,'https://blog.naver.com/third_run'
-        ,TIMESTAMP '2025-01-18 16:59:22.000000'
+        ,sysdate
         ,NULL
         ,NULL
-        , Y'
-        ,'123124'
-        );
+        ,sysdate
+        , 'Y'
+        ,#{salt}
+        )
 
     </insert>
 </mapper>
