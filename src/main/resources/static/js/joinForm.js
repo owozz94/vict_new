@@ -15,6 +15,7 @@ $(document).ready(function(){
             input = input.substr(0, 13);
         }
         $(this).val(input);
+//        formValidate();
     })
 })
 
@@ -86,6 +87,7 @@ function isEmailDuplicate(){
     });
 }
 function isEmpty(){
+    console.log("isEmpty()::");
     let emailFlag = $('input[name=emailExtFlag]').val();
     let nickname = $('#nickname').val();
     let pwd = $('#password').val();
@@ -116,7 +118,7 @@ function allCheck(){
     }else{
         $(".items").prop("checked", false);
     }
-    isEmpty();
+//    isEmpty();
  }
 function isCheck(){
     var chkCount = $('input:checkbox:checked').length;
@@ -133,8 +135,10 @@ function formValidate(){
     console.log('formValidate');
     const joinForm = $('#joinForm');
      // 커스텀 메소드 추가
-    $.validator.addMethod("phoneFormat", function(value, element) {
-        return this.optional(element) || /^010-[0-9]{4}-[0-9]{4}$/.test(value);
+    $.validator.addMethod("phoneFormat", function(value) {
+        if(!value) return true;
+        // 유효성 검사: 010-XXXX-XXXX 형식 확인
+        return /^010-[0-9]{4}-[0-9]{4}$/.test(value);
     }, "연락처 형식이 맞지 않습니다.");
 
     joinForm.validate({
@@ -184,20 +188,38 @@ function formValidate(){
                 equalTo: '동일한 비밀번호를 입력해 주세요.'
            }
         },
+
         errorPlacement: function(error, element){
           if(element.attr('name') == 'email'){
             error.insertAfter(".email-group");
           }else if(element.attr('name') == 'phoneNum'){
+          console.log("phoneNum:::");
             error.insertAfter('.phone-group');
+            $('.verification-request-btn').attr('disabled', true); // 버튼 비활성화
           }
           else{
             error.insertAfter(element);
           }
-        }
+        },
+        success: function(label, element) {
+            // 유효성 검사가 성공하면 버튼 활성화
+            if ($(element).attr('name') === 'phoneNum') {
+                $('.verification-request-btn').attr('disabled', false); // 버튼 활성화
+            }
+        },
+
+
     });
+
+    const phoneInput = $('#phoneNum').val();
+     if (!$.validator.methods.phoneFormat(phoneInput) ){
+          $('.verification-request-btn').attr('disabled', true); // 버튼 비활성화
+     } else {
+          $('.verification-request-btn').attr('disabled', false); // 버튼 활성화
+     }
 }
 
-function requestPhoneVerification() {
+function isValidPhoneNumber() {
     isEmpty();
     var phoneNum =  $('#phoneNum').val();
         var phone = phoneNum.replace(/[^0-9]/g, ''); //숫자가 아닌 경우 빈값으로 바꿈.
@@ -208,21 +230,56 @@ function requestPhoneVerification() {
         }
         $('#phoneNum').val(phone);
         console.log(phone);
-
-
 //    const phonePattern = /^[0-9]{3}-[0-9]{4}-[0-9]{4}$/;
-
+//
 //    if(!phonePattern.test(phone)){
 //        alert('연락처 형식이 맞지 않습니다.');
 //        return;
 //    }
-
+}
+function sendVerificationCode() {
+    isValidPhoneNumber();
+    var phoneNum =  $('#phoneNum').val();
+    alert("인증번호를 보냈습니다.");
     $('.phone-verification-group').show();
-    $('.verification-request-btn').text('재발송');
-    // 인증번호 전송 로직 추가 필요
+    $('.verification-request-btn').css('display', 'none');
+    $('#phoneNum').attr('disabled','true');
+    phoneNum = phoneNum.replace(/-/g,''); //'-' 제거
+    // 인증번호 전송 로직
+    $.ajax({
+        type:"post",
+        data:phoneNum,
+        contentType: "application/json",
+        url:"/sms/send",
+        success:function(result){
+            console.log(result);
+        }
+
+    })
 }
 
-function confirmVerificationCode() {
-    const code = $('#verificationCode').val();
-    // 인증번호 확인 로직 추가 필요
+function verifySmsCode() {
+    var smsCode = $('#verificationCode').val();
+    // 인증번호 확인
+    $.ajax({
+        type:"post",
+        data:smsCode,
+        contentType : "application/json",
+        url:"/sms/verifyCode",
+        success:function(result){
+            alert('인증되었습니다.');
+            $('#verificationCode').attr('disabled','true');
+            $('.verification-confirm-btn').attr('disabled','true');
+            console.log(result);
+        },
+        error:function(xhr, status, err){
+            if(xhr.status == 401){
+                alert('잘못된 인증번호입니다.');
+            }else{
+                alert('error!');
+            }
+        }
+
+
+    })
 }

@@ -20,6 +20,12 @@
     margin-bottom: 1.5rem;
     text-align: center;
 }
+input:disabled {
+    background-color: #f9f9f9; /* 옅은 회색 */
+    color: #a0a0a0; /* 비활성화된 텍스트 색 */
+    border: 1px solid #d0d0d0; /* 비활성화된 테두리 색 */
+    cursor: not-allowed; /* 마우스 포인터 변경 */
+}
 
 .divider {
     height: 1px;
@@ -54,6 +60,7 @@ input, select {
     transition: all 0.2s ease;
     font-family: 'Pretendard', Arial, sans-serif;
     box-sizing: border-box;
+    border-radius: 4px;
 }
 
 select {
@@ -69,7 +76,7 @@ select {
     color: #FF8396;
     background-color: #f8f8f8;
     border: none;
-    border-radius: 6px;
+    border-radius: 4px;
     width: 100%;
     cursor: pointer;
     transition: all 0.2s ease;
@@ -152,7 +159,7 @@ select {
 
 .phone-group, .phone-verification-group {
     display: flex;
-    gap: 10px;
+    gap: 5px;
     margin-bottom: 15px;
 }
 
@@ -160,7 +167,7 @@ select {
     flex: 1;
     padding: 10px;
     border: 1px solid #ddd;
-    border-radius: 5px;
+    border-radius: 3px;
 }
 
 .verification-request-btn, .verification-confirm-btn {

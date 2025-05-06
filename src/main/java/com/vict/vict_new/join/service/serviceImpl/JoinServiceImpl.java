@@ -29,6 +29,25 @@ public class JoinServiceImpl implements JoinService {
         String password = user.getPassword();
         String encryption = sha256.Hashing(password.getBytes(), user.getSalt());
         user.setPassword(encryption);
+        //기존에 존재하는 회원인지 확인하는 로직 필요
+        //입력 데이터 검증.
+        //
+        //이메일/전화번호 중복 검사.
+        //
+        //이메일/전화번호 인증.
+        //
+        //패스워드 해싱 알고리즘 개선.
+        //
+        //CAPTCHA 또는 봇 방지.
+        //
+        //민감한 데이터 암호화.
+        //
+        //약관 및 동의 처리.
+        //
+        //로그 기록 및 감사 가능성.
+        //
+        //계정 상태 관리.
+
 
         return dao.insertUser(user);
     }
