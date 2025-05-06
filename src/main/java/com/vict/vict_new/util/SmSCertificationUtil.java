@@ -30,8 +30,10 @@ public class SmSCertificationUtil {
         Message message = new Message();
         message.setFrom(fromNumber); //발신자 번호 설정
         message.setTo(to); //수신자 번호 설정
-        message.setText("본인확인 인증번호 : " +certificationCode); //메시지 내용
+        message.setText("[vict] 본인확인 인증번호 : " +certificationCode); //메시지 내용
 
-        this.messageService.sendOne(new SingleMessageSendingRequest(message)); //메시지 발송 요청
+      //  this.messageService.sendOne(new SingleMessageSendingRequest(message)); //메시지 발송 요청
     }
+
+
 }
