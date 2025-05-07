@@ -15,6 +15,32 @@
     <select id="getUserSeq" resultType="int">
         SELECT LPAD(USER_SEQ.NEXTVAL,5,0) FROM DUAL
     </select>
+
+    <select id="getAccountCount" parameterType="int" resultType="int">
+        SELECT ACCOUNT_COUNT
+            FROM TB_USER_MANAGE UM, TB_USER UR
+        WHERE 1=1
+            AND UM.USER_SEQ = UR.USER_SEQ
+            AND UM = #{user_seq}
+            AND UM.USE_YN = 'Y'
+    </select>
+
+    <insert id="insertUserManage" parameterType="com.vict.vict_new.join.dto.UserManage">
+        INSERT INTO TB_USER_MANAGE(
+        USER_SEQ
+        ,ROLE
+        ,MARKETING_AGREED
+        ,ACCOUNT_COUNT
+        )
+        VALUES(
+         #{userSeq}
+        ,#{role}
+        ,#{marketingAgreed}
+        ,#{accountCount}
+        );
+
+    </insert>
+
     <insert id="insertUser" parameterType="com.vict.vict_new.join.dto.User" >
         INSERT INTO VICT.TB_USER
         (

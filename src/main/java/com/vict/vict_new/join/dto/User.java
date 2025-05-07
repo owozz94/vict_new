@@ -1,5 +1,7 @@
 package com.vict.vict_new.join.dto;
 
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -9,12 +11,17 @@ import java.util.Date;
 @Setter
 public class User {
     int userSeq; /** 유저 시퀀스 */
+    @NotBlank(message = "이메일은 필수입니다.")
     String email; /** 이메일 */
+    @NotBlank(message = "닉네임은 필수입니다.")
     String nickname; /** 닉네임 */
+    @NotBlank(message = "비밀번호는 필수입니다.")
+    @Size(min=8, max =20, message = "비밀전호는 8자 이상, 20자 이하이어야 합니다.")
     String password; /** 비밀번호 */
     String userName; /** 이름  */
     String birthday; /**생년월일 */
     int gender; /**성별 1:남 2:여 */
+    @NotBlank(message = "핸드폰번호는 필수입니다.")
     String phoneNum; /** 핸드폰번호 */
     String blogUrl; /** 블로그 주소 */
     Date regDate; /** 회원가입 날짜 */

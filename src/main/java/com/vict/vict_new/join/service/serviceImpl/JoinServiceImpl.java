@@ -29,26 +29,21 @@ public class JoinServiceImpl implements JoinService {
         String password = user.getPassword();
         String encryption = sha256.Hashing(password.getBytes(), user.getSalt());
         user.setPassword(encryption);
-        //기존에 존재하는 회원인지 확인하는 로직 필요
-        //입력 데이터 검증.
-        //
-        //이메일/전화번호 중복 검사.
-        //
-        //이메일/전화번호 인증.
-        //
-        //패스워드 해싱 알고리즘 개선.
-        //
-        //CAPTCHA 또는 봇 방지.
-        //
-        //민감한 데이터 암호화.
-        //
-        //약관 및 동의 처리.
-        //
-        //로그 기록 및 감사 가능성.
-        //
-        //계정 상태 관리.
+        //기존에 존재하는 계정인지 여부
+        int emailExist = dao.getEmailExist(user.getEmail());
+        //한 개의 전화번호 인증으로 3개의 계정까지 생성 가능.
+        int accountCount = dao.getAccountCount(user.getUserSeq());
+        if(emailExist > 0){
+            return 0;
+        }else if(accountCount > 3){
+            return -1;
+        }else{
+            if(emailExist == 0 && accountCount < 3){
+                int insertUserManage = dao.insertUserManage(userManage); //UserManage 받는 부분 필요
+                int insertUser = dao.insertUser(user);
+                //위에 return 값 성공/실패시 검증 로직 필요.
+            }
+        }
 
-
-        return dao.insertUser(user);
     }
 }
