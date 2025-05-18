@@ -4,7 +4,6 @@ $(document).ready(function(){
         //숫자만 남김
         input = input.replace(/[^0-9]/g, '');
         //전화번호 포맷 000-0000-0000
-
         if(input.length > 3 && input.length <= 7){
             input = input.substring(0, 3) + '-' + input.substring(3);
         }else if(input.length > 7){
@@ -33,7 +32,6 @@ function join(){
     isEmpty();
 }
 
-
 function selectEmail(){
     var inputEmail = $('#email').val().split('@')[0]; //이메일
     var selectEmail = $('select[name=emailBox]').val();
@@ -58,7 +56,6 @@ function isEmailDuplicate(){
         alert('이메일을 입력해주세요.');
         return false;
     }
-
 
     if(!emailValidate(email)){
         alert('올바른 이메일 형식으로 입력해주세요.');
@@ -140,6 +137,10 @@ function formValidate(){
         // 유효성 검사: 010-XXXX-XXXX 형식 확인
         return /^010-[0-9]{4}-[0-9]{4}$/.test(value);
     }, "연락처 형식이 맞지 않습니다.");
+    $.validator.addMethod("passwordCheck", function(value){
+        if(!value) return true;
+        return /^(?=.*[A-Za-z])(?=.*[0-9]).{8,}/.test(value);
+    }, "비밀번호 형식이 맞지 않습니다.");
 
     joinForm.validate({
         rules:{
@@ -156,10 +157,12 @@ function formValidate(){
                 minlength:2
             },
             password:{
+               passwordCheck:true,
                required:true,
                minlength: 8,
             },
             password_2:{
+              passwordCheck:true,
               required:true,
               minlength: 8,
               equalTo:password
@@ -254,7 +257,6 @@ function sendVerificationCode() {
         success:function(result){
             console.log(result);
         }
-
     })
 }
 
@@ -279,7 +281,5 @@ function verifySmsCode() {
                 alert('error!');
             }
         }
-
-
     })
 }
