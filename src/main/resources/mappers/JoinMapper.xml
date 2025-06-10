@@ -12,17 +12,20 @@
             ), 0) AS EXIST
         FROM dual
     </select>
-    <select id="getUserSeq" resultType="int">
-        SELECT LPAD(USER_SEQ.NEXTVAL,5,0) FROM DUAL
+
+    <select id="getEmailExist" parameterType="string" resultType="int">
+        SELECT NVL(
+        (SELECT 1
+        FROM TB_USER
+        WHERE USE_YN = 'Y'
+        AND PHONE_NUM=  #{phoneNum}
+        AND ROWNUM = 1
+        ), 0) AS EXIST
+        FROM dual
     </select>
 
-    <select id="getAccountCount" parameterType="int" resultType="int">
-        SELECT ACCOUNT_COUNT
-            FROM TB_USER_MANAGE UM, TB_USER UR
-        WHERE 1=1
-            AND UM.USER_SEQ = UR.USER_SEQ
-            AND UM = #{user_seq}
-            AND UM.USE_YN = 'Y'
+    <select id="getNewSeq" resultType="int">
+        SELECT LPAD(USER_SEQ.NEXTVAL,5,0) FROM DUAL
     </select>
 
     <insert id="insertUserManage" parameterType="com.vict.vict_new.join.dto.UserManage">

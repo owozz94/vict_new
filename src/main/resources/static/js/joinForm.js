@@ -18,20 +18,6 @@ $(document).ready(function(){
     })
 })
 
-function join(){
-    const joinForm = $('#joinForm').serializeArray();;
-    let emailOrg = $('input[name=emailOrg]').val();
-    let email = $('#email').val();
-    let dupFlag = $('input[name=dupFlag]').val();
-
-    isEmailDuplicate();
-
-    if(emailOrg != email || emailOrg == '' || dupFlag == 'false'){
-        return false;
-      }
-    isEmpty();
-}
-
 function selectEmail(){
     var inputEmail = $('#email').val().split('@')[0]; //이메일
     var selectEmail = $('select[name=emailBox]').val();
@@ -86,13 +72,14 @@ function isEmailDuplicate(){
 function isEmpty(){
     console.log("isEmpty()::");
     let emailFlag = $('input[name=emailExtFlag]').val();
+    let phoneFlag = $("input[name=verificationPhoneNum]").val();
     let nickname = $('#nickname').val();
     let pwd = $('#password').val();
     let pwd_2 = $('#password_2').val();
     let checked = $('.all-items-chk').is(':checked');
     formValidate();
 
-    if(nickname != '' && (pwd == pwd_2) && checked){
+    if(nickname != '' && (pwd == pwd_2) && checked && phoneFlag == "true"){
          $('.signup-btn').addClass('active');
          $('.signup-btn').attr('disabled',false);
     }else{
@@ -115,7 +102,7 @@ function allCheck(){
     }else{
         $(".items").prop("checked", false);
     }
-//    isEmpty();
+    isEmpty();
  }
 function isCheck(){
     var chkCount = $('input:checkbox:checked').length;
@@ -125,6 +112,7 @@ function isCheck(){
     }else{
         $("input[name=all-items-chk]").prop('checked', false);
     }
+    isEmpty();
 }
 
 //폼 유효성 검사
@@ -140,7 +128,7 @@ function formValidate(){
     $.validator.addMethod("passwordCheck", function(value){
         if(!value) return true;
         return /^(?=.*[A-Za-z])(?=.*[0-9]).{8,}/.test(value);
-    }, "비밀번호 형식이 맞지 않습니다.");
+    }, "8자 이상 영문,숫자 조합");
 
     joinForm.validate({
         rules:{
@@ -166,6 +154,9 @@ function formValidate(){
               required:true,
               minlength: 8,
               equalTo:password
+            },
+            verificationCode:{
+                required:true
             }
         },
         messages:{
@@ -189,6 +180,9 @@ function formValidate(){
                 required:'비밀번호는 필수 입력 항목입니다.',
                 minlength : '최소 {0}글자 이상 입력하세요.',
                 equalTo: '동일한 비밀번호를 입력해 주세요.'
+           },
+           verificationCode:{
+                required:'인증번호를 입력해주세요.'
            }
         },
 
@@ -196,7 +190,6 @@ function formValidate(){
           if(element.attr('name') == 'email'){
             error.insertAfter(".email-group");
           }else if(element.attr('name') == 'phoneNum'){
-          console.log("phoneNum:::");
             error.insertAfter('.phone-group');
             $('.verification-request-btn').attr('disabled', true); // 버튼 비활성화
           }
@@ -210,15 +203,17 @@ function formValidate(){
                 $('.verification-request-btn').attr('disabled', false); // 버튼 활성화
             }
         },
-
-
+        submitHandler: function(form) {
+            console.log("모든 유효성 검사 통과");
+            isEmpty();
+        }
     });
 
     const phoneInput = $('#phoneNum').val();
      if (!$.validator.methods.phoneFormat(phoneInput) ){
           $('.verification-request-btn').attr('disabled', true); // 버튼 비활성화
      } else {
-          $('.verification-request-btn').attr('disabled', false); // 버튼 활성화
+//          $('.verification-request-btn').attr('disabled', false); // 버튼 활성화
      }
 }
 
@@ -233,16 +228,14 @@ function isValidPhoneNumber() {
         }
         $('#phoneNum').val(phone);
         console.log(phone);
-//    const phonePattern = /^[0-9]{3}-[0-9]{4}-[0-9]{4}$/;
-//
-//    if(!phonePattern.test(phone)){
-//        alert('연락처 형식이 맞지 않습니다.');
-//        return;
-//    }
 }
+
 function sendVerificationCode() {
     isValidPhoneNumber();
     var phoneNum =  $('#phoneNum').val();
+        if(phoneNum == ''){
+            return alert('핸드폰 번호를 입력해주세요.');
+        }
     alert("인증번호를 보냈습니다.");
     $('.phone-verification-group').show();
     $('.verification-request-btn').css('display', 'none');
@@ -261,7 +254,10 @@ function sendVerificationCode() {
 }
 
 function verifySmsCode() {
-    var smsCode = $('#verificationCode').val();
+var smsCode =  $('#verificationCode').val();
+    if(smsCode == ''){
+        return alert('인증번호를 입력해주세요.');
+    }
     // 인증번호 확인
     $.ajax({
         type:"post",
@@ -272,12 +268,43 @@ function verifySmsCode() {
             alert('인증되었습니다.');
             $('#verificationCode').attr('disabled','true');
             $('.verification-confirm-btn').attr('disabled','true');
+            $("input[name=verificationPhoneNum]").val(true);
+            isEmpty();
             console.log(result);
         },
         error:function(xhr, status, err){
             if(xhr.status == 401){
-                alert('잘못된 인증번호입니다.');
-            }else{
+                alert('인증번호를 다시 확인해주세요.');
+            }
+            else{
+                alert('error!');
+            }
+        }
+    })
+}
+function join(){
+    isEmpty();
+    const join_form = $('#joinForm').serializeArray();
+
+    $.ajax({
+        type:"post",
+        data:join_form,
+        url:"/join/signup",
+        success:function(result){
+            alert('가입되었습니다.');
+            console.log(result);
+        },
+        error:function(xhr, status, err){
+            if(xhr.status == 400){
+                alert('잘못된 요청입니다.');
+            }
+            else if(xhr.status == 403){
+                alert('인가되지 않은 접근입니다.');
+            }
+            else if(xhr.status == 409){
+                alert('이미 존재하는 계정입니다.');
+            }
+            else{
                 alert('error!');
             }
         }

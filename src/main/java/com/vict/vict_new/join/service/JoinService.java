@@ -8,5 +8,4 @@ public interface JoinService {
 
     int insertUser(User user);
 
-
 }

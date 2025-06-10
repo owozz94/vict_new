@@ -9,11 +9,12 @@ public interface JoinDao {
 
     int getEmailExist(String email);
 
+    int getPhoneExist(String phoneNum);
+
     int insertUser(User user);
 
-    int getUserSeq();
-
-    int getAccountCount(int userSeq);
+    int getNewSeq();
 
     int insertUserManage(UserManage userManage);
+
 }

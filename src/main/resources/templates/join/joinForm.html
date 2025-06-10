@@ -13,12 +13,13 @@
     <div class="form-container">
         <h1 class="title">회원가입</h1>
         <div class="divider"></div>
-        <form id="joinForm" th:object="${form}" th:action="@{join/join}" method="post" onsubmit="return join()">
+        <form id="joinForm" th:object="${form}" method="post" onsubmit="return join()">
             <input type="hidden" name="socialKey" value=""/>
             <input type="hidden" name="loginType" value="1"/>
             <input type="hidden" name="useYn" value="Y"/>
             <input type="hidden" name="emailExtFlag" value="false"/>
             <input type="hidden" name="emailOrg" value=""/>
+            <input type="hidden" name="verificationPhoneNum" value="false"/>
             <div class="form-group email-group">
                 <input type="text"  th:field="*{email}" th:onChange="isEmpty()" name="email"  placeholder="이메일">
                 <select name="emailBox" th:onChange="selectEmail()">
