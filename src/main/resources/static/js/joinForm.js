@@ -1,4 +1,8 @@
+let validator;
+
 $(document).ready(function(){
+    formValidate();
+
     $('#phoneNum').on('input', function(){
         let input = $(this).val();
         //숫자만 남김
@@ -14,8 +18,26 @@ $(document).ready(function(){
             input = input.substr(0, 13);
         }
         $(this).val(input);
-//        formValidate();
     })
+})
+
+$('#joinForm').on('keyup change', function(){
+    console.log("joinForm keyup or change")
+    if (!validator) return; // 안전장치
+    const formValid = validator.checkForm();
+    //핸드폰 인증 여부
+    let phoneFlag = $('input[name=verificationPhoneNum]').val() == 'true';
+    const checked = $('.items:checked').length > 2;
+    console.log("formValid=>"+formValid);
+    console.log("phoneFlag=>"+phoneFlag);
+    console.log("checked=>"+checked);
+    if(formValid && phoneFlag && checked){
+    console.log("들어옴")
+        $('.signup-btn').addClass('active').attr('disabled', false);
+    }else{
+    console.log("안들어옴")
+        $('.signup-btn').removeClass('active').attr('disabled', true);
+    }
 })
 
 function selectEmail(){
@@ -31,7 +53,6 @@ function selectEmail(){
     }
     $('#email').val(inputEmail+domains[selectEmail]);
     $('#email').valid();
-    isEmpty();
 }
 
 //이메일 중복확인
@@ -62,30 +83,10 @@ function isEmailDuplicate(){
             $('input[name=emailExtFlag]').attr('value', true);
             $('#email').attr('disabled','true');
             $('select[name=emailBox]').attr('disabled', true);
-            //           $('.verification-btn').attr('disabled', true);
-            isEmpty();
             $('input[name=emailOrg]').attr('value', email);
             }
         }
     });
-}
-function isEmpty(){
-    console.log("isEmpty()::");
-    let emailFlag = $('input[name=emailExtFlag]').val();
-    let phoneFlag = $("input[name=verificationPhoneNum]").val();
-    let nickname = $('#nickname').val();
-    let pwd = $('#password').val();
-    let pwd_2 = $('#password_2').val();
-    let checked = $('.all-items-chk').is(':checked');
-    formValidate();
-
-    if(nickname != '' && (pwd == pwd_2) && checked && phoneFlag == "true"){
-         $('.signup-btn').addClass('active');
-         $('.signup-btn').attr('disabled',false);
-    }else{
-        $('.signup-btn').removeClass('active');
-        $('.signup-btn').attr('disabled',true);
-    }
 }
 //이메일 정규식
 function emailValidate(email){
@@ -97,22 +98,23 @@ function emailValidate(email){
 }
 
 function allCheck(){
-    if($("input[name=all-items-chk]").is(":checked") === true){
+    if($("input[name=all-items]").is(":checked") === true){
         $(".items").prop("checked", true);
+        $(".marketing-items").prop("checked", true);
     }else{
         $(".items").prop("checked", false);
+        $(".marketing-items").prop("checked", false);
     }
-    isEmpty();
  }
+
 function isCheck(){
     var chkCount = $('input:checkbox:checked').length;
 
-    if(chkCount > 2 && $("input[name=all-items-chk]").is(":checked") === false){
-        $("input[name=all-items-chk]").prop('checked', true);
+    if(chkCount > 3 && $("input[name=all-items]").is(":checked") === false){
+        $("input[name=all-items]").prop('checked', true);
     }else{
-        $("input[name=all-items-chk]").prop('checked', false);
+        $("input[name=all-items]").prop('checked', false);
     }
-    isEmpty();
 }
 
 //폼 유효성 검사
@@ -130,7 +132,7 @@ function formValidate(){
         return /^(?=.*[A-Za-z])(?=.*[0-9]).{8,}/.test(value);
     }, "8자 이상 영문,숫자 조합");
 
-    joinForm.validate({
+    validator = joinForm.validate({
         rules:{
             email:{
                 required:true,
@@ -205,7 +207,6 @@ function formValidate(){
         },
         submitHandler: function(form) {
             console.log("모든 유효성 검사 통과");
-            isEmpty();
         }
     });
 
@@ -218,40 +219,17 @@ function formValidate(){
 }
 
 function isValidPhoneNumber() {
-    isEmpty();
     var phoneNum =  $('#phoneNum').val();
-        var phone = phoneNum.replace(/[^0-9]/g, ''); //숫자가 아닌 경우 빈값으로 바꿈.
-        if(phone.length > 3 && phone.length <= 7) {
-            phone = phone.substr(0,3) + '-' + phone.substr(3);
-        } else if(phone.length > 7) {
-            phone = phone.substr(0,3) + '-' + phone.substr(3,4) + '-' + phone.substr(7);
-        }
-        $('#phoneNum').val(phone);
-        console.log(phone);
+    var phone = phoneNum.replace(/[^0-9]/g, ''); //숫자가 아닌 경우 빈값으로 바꿈.
+    if(phone.length > 3 && phone.length <= 7) {
+        phone = phone.substr(0,3) + '-' + phone.substr(3);
+    } else if(phone.length > 7) {
+        phone = phone.substr(0,3) + '-' + phone.substr(3,4) + '-' + phone.substr(7);
+    }
+    $('#phoneNum').val(phone);
+    console.log(phone);
 }
 
-function sendVerificationCode() {
-    isValidPhoneNumber();
-    var phoneNum =  $('#phoneNum').val();
-        if(phoneNum == ''){
-            return alert('핸드폰 번호를 입력해주세요.');
-        }
-    alert("인증번호를 보냈습니다.");
-    $('.phone-verification-group').show();
-    $('.verification-request-btn').css('display', 'none');
-    $('#phoneNum').attr('disabled','true');
-    phoneNum = phoneNum.replace(/-/g,''); //'-' 제거
-    // 인증번호 전송 로직
-    $.ajax({
-        type:"post",
-        data:phoneNum,
-        contentType: "application/json",
-        url:"/sms/send",
-        success:function(result){
-            console.log(result);
-        }
-    })
-}
 
 function verifySmsCode() {
 var smsCode =  $('#verificationCode').val();
@@ -265,12 +243,11 @@ var smsCode =  $('#verificationCode').val();
         contentType : "application/json",
         url:"/sms/verifyCode",
         success:function(result){
-            alert('인증되었습니다.');
-            $('#verificationCode').attr('disabled','true');
-            $('.verification-confirm-btn').attr('disabled','true');
-            $("input[name=verificationPhoneNum]").val(true);
-            isEmpty();
-            console.log(result);
+                alert('인증되었습니다.');
+                $('#verificationCode').attr('disabled','true');
+                $('.verification-confirm-btn').attr('disabled','true');
+                $('input[name=verificationPhoneNum]').val(true);
+                $('#joinForm').trigger('change');
         },
         error:function(xhr, status, err){
             if(xhr.status == 401){
@@ -282,8 +259,72 @@ var smsCode =  $('#verificationCode').val();
         }
     })
 }
+async function sendVerificationCode() {
+    isValidPhoneNumber();
+    var phoneNum =  $('#phoneNum').val();
+    if(phoneNum == ''){
+        return alert('핸드폰 번호를 입력해주세요.');
+    }
+    //핸드폰 존재 여부 체크
+    const isValid = await phoneCheck();
+
+    if(isValid){
+        alert("인증번호를 보냈습니다.");
+        $('.phone-verification-group').show();
+        $('.verification-request-btn').css('display', 'none');
+        $('#phoneNum').attr('readonly','true');
+        phoneNum = phoneNum.replace(/-/g,''); //'-' 제거
+
+        // 인증번호 전송 로직
+        $.ajax({
+            type:"post",
+            data:phoneNum,
+            contentType: "application/json",
+            url:"/sms/send",
+            success:function(result){
+                console.log(result);
+                return result;
+            }
+        })
+    }
+}
+
+async function phoneCheck(){
+    //핸드폰번호 중복여부 체크
+    var phoneNum =  $('#phoneNum').val();
+    console.log('핸드폰번호 중복여부 체크');
+
+    try{
+    await $.ajax({
+        type:"get",
+        data:{phoneNum},
+        url:"/join/phoneExists",
+        success:function(result){
+            console.log(result);
+        }
+        });
+        return true;
+        }catch(xhr){
+            if (xhr.status == 409) {
+                alert('이미 가입된 번호입니다.');
+                return false;
+            } else {
+                alert('error!');
+                return false;
+            }
+    }
+//        error:function(xhr, status, err){
+//            if(xhr.status == 409){
+//                alert('이미 가입된 번호입니다.');
+//            }
+//            else{
+//                alert('error!');
+//            }
+//        }
+//    })
+}
+
 function join(){
-    isEmpty();
     const join_form = $('#joinForm').serializeArray();
 
     $.ajax({
