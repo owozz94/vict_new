@@ -35,9 +35,10 @@ dependencies {
 	testImplementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter-test:3.0.3'
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
-	implementation 'net.nurigo:sdk:4.3.2'
 	implementation group: 'jakarta.validation', name: 'jakarta.validation-api', version: '3.0.2'
-
+	implementation 'net.nurigo:sdk:4.3.2'
+	// https://mvnrepository.com/artifact/org.mindrot/jbcrypt
+	implementation("org.mindrot:jbcrypt:0.4")
 	tasks.named('test') {
 		useJUnitPlatform()
 	}

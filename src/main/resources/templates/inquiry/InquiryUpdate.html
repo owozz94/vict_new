@@ -13,7 +13,7 @@
         <p>1:1문의</p>
     </div>
     <div class="board_write">
-        <form name="customer_form" id="customer_form" method="post" onsubmit="return inquiry()" th:object="${items}">
+        <form name="customer_form" id="customer_form" onsubmit="return inquiry()" th:object="${items}">
             <input type="hidden" name="inquiryType" th:value="${items.inquiryType}">
             <table class="tb_inquiry">
                 <tbody>

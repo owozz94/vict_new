@@ -1,5 +1,6 @@
 package com.vict.vict_new.exception;
 
+import com.vict.vict_new.join.dto.User;
 import org.springframework.http.HttpStatus;
 
 public class UserRegistrationException extends RuntimeException{
@@ -20,7 +21,7 @@ public class UserRegistrationException extends RuntimeException{
     }
     public static UserRegistrationException emailAlreadyExists(String email){
         return new UserRegistrationException(
-                "Email"+email + "already exists.", HttpStatus.CONFLICT
+                "Email already exists. => "+email, HttpStatus.CONFLICT
         );
     }
     public static UserRegistrationException certificationFailed(){
@@ -33,9 +34,21 @@ public class UserRegistrationException extends RuntimeException{
                 "SMS code send failed.", HttpStatus.UNAUTHORIZED
         );
     }
-    public static UserRegistrationException userAlreadyExists() {
+    public static UserRegistrationException userPhoneNumAlreadyExists(String phoneNum){
         return new UserRegistrationException(
-                "User already exists.", HttpStatus.CONFLICT
+                "PhoneNum already exists. =>"+phoneNum, HttpStatus.CONFLICT
+        );
+    }
+    public static UserRegistrationException userEmailAlreadyExists(String email) {
+        return new UserRegistrationException(
+                "Email already exists. => "+email, HttpStatus.CONFLICT
+        );
+    }
+
+    public static UserRegistrationException userAlreadyExists(User user) {
+        return new UserRegistrationException(
+                "User already exists. user seq : "+user.getUserKey()
+                +"\n name :"+user.getUserName()+"\n email :" + user.getEmail(), HttpStatus.CONFLICT
         );
     }
     public static UserRegistrationException accountLimitExceeded(){

@@ -20,9 +20,9 @@ public class InquiryServiceImpl implements InquiryService {
     }
 
     @Override
-    public List<InquiryDto> selectInquiryList(int userSeq) {
-        userSeq = 1;  //임시 시퀀스
-        return dao.selectInquiryList(userSeq);
+    public List<InquiryDto> selectInquiryList(int userKey) {
+        userKey = 1;  //임시 시퀀스
+        return dao.selectInquiryList(userKey);
     }
 
     @Override

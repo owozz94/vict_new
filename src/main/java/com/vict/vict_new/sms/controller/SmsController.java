@@ -1,6 +1,5 @@
 package com.vict.vict_new.sms.controller;
 
-import com.vict.vict_new.sms.SmsRequestDto;
 import com.vict.vict_new.sms.service.SmsService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -28,11 +27,11 @@ public class SmsController {
         if(codeChk){
             return ResponseEntity.status(HttpStatus.OK)
                     .body(codeChk);
-        }else{
+        }
+        else{
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
                     .body(codeChk);
         }
-
 
     }
 }

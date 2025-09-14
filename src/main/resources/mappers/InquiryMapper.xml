@@ -11,13 +11,15 @@
         INQUIRY_SEQ
         ,INQUIRY_TYPE
         ,TITLE
-        ,REGT_DATE
-        ,USE_YN
+        ,IQ.REGT_DATE
+        ,IQ.USE_YN
         ,QUESTION_YN
-        FROM TB_INQUIRY
-        WHERE USE_YN = 'Y'
-        AND USER_SEQ = '1'
-        ORDER BY REGT_DATE DESC
+        FROM TB_INQUIRY IQ,TB_USER TU
+        WHERE 1=1
+        AND IQ.USE_YN = 'Y'
+        AND TU.USE_YN = 'Y'
+        AND TU.USER_KEY = '1'
+        ORDER BY IQ.REGT_DATE DESC
 
     </select>
     <select id="selectInquiry" parameterType="int" resultType="com.vict.vict_new.inquiry.dto.InquiryDto">
@@ -25,16 +27,17 @@
         ,INQUIRY_TYPE
         ,TITLE
         ,CONTENT
-        ,REGT_DATE
-        ,UPDATE_DATE
-        ,USER_SEQ
-        ,USE_YN
+        ,IQ.REGT_DATE
+        ,IQ.LAST_UPDATE_TIME
+        ,USER_KEY
+        ,IQ.USE_YN
         ,QUESTION_YN
         ,QUESTION_DATE
-        FROM TB_INQUIRY
-        WHERE USE_YN = 'Y'
-        AND USER_SEQ = '1'
-        AND INQUIRY_SEQ = #{inquirySeq}
+        FROM TB_INQUIRY IQ,TB_USER TU
+        WHERE 1=1
+        AND IQ.USE_YN = 'Y'
+        AND TU.USE_YN = 'Y'
+        AND TU.USER_KEY = '1'
     </select>
     <insert id="insertInquiry" parameterType="com.vict.vict_new.inquiry.dto.InquiryDto">
         INSERT INTO TB_INQUIRY(
@@ -43,9 +46,8 @@
         ,TITLE
         ,CONTENT
         ,REGT_DATE
-        ,UPDATE_DATE
+        ,LAST_UPDATE_TIME
         ,DELETE_DATE
-        ,USER_SEQ
         ,USE_YN
         ,QUESTION_YN
         ,QUESTION_DATE
@@ -57,7 +59,6 @@
         ,sysdate
         ,sysdate
         ,''
-        ,1
         ,'Y'
         ,'N'
         ,''
@@ -68,9 +69,9 @@
         UPDATE TB_INQUIRY
         SET TITLE    = 'TEST22'
         ,CONTENT     = '내용임돠'
-        ,UPDATE_DATE = SYSDATE
-        WHERE    USER_SEQ = 1
-          AND INQUIRY_SEQ = 1;
+        ,LAST_UPDATE_TIME = SYSDATE
+        WHERE  1=1
+        AND INQUIRY_SEQ = 1
 
     </update>
 

@@ -13,7 +13,7 @@
         FROM dual
     </select>
 
-    <select id="getEmailExist" parameterType="string" resultType="int">
+    <select id="getPhoneExist" parameterType="string" resultType="int">
         SELECT NVL(
         (SELECT 1
         FROM TB_USER
@@ -24,61 +24,55 @@
         FROM dual
     </select>
 
-    <select id="getNewSeq" resultType="int">
-        SELECT LPAD(USER_SEQ.NEXTVAL,5,0) FROM DUAL
-    </select>
-
     <insert id="insertUserManage" parameterType="com.vict.vict_new.join.dto.UserManage">
         INSERT INTO TB_USER_MANAGE(
-        USER_SEQ
+        USER_KEY
         ,ROLE
         ,MARKETING_AGREED
-        ,ACCOUNT_COUNT
         )
         VALUES(
-         #{userSeq}
+         #{userKey}
         ,#{role}
         ,#{marketingAgreed}
-        ,#{accountCount}
-        );
+        )
 
     </insert>
 
     <insert id="insertUser" parameterType="com.vict.vict_new.join.dto.User" >
         INSERT INTO VICT.TB_USER
         (
-        USER_SEQ
+        USER_KEY
         ,EMAIL
         ,NICKNAME
         ,PASSWORD
         ,USER_NAME
         ,BIRTHDAY
         ,GENDER
-        ,PHON_NUM
+        ,PHONE_NUM
         ,BLOG_URL
-        ,REG_DATE
+        ,REGT_DATE
         ,END_DATE
         ,LAST_LOGIN_TIME
         ,LAST_UPDATE_TIME
         ,USE_YN
-        ,SALT
+        ,LOGIN_TYPE
         )
         VALUES(
-         #{userSeq}
+         #{userKey}
         ,#{email}
         ,#{nickname}
         ,#{password}
         ,''
         ,''
         ,''
+        ,#{phoneNum}
         ,''
-        ,'https://blog.naver.com/third_run'
         ,sysdate
-        ,NULL
-        ,NULL
+        ,''
+        ,''
         ,sysdate
         , 'Y'
-        ,#{salt}
+        ,#{loginType}
         )
 
     </insert>

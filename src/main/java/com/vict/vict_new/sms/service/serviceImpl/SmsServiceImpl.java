@@ -1,11 +1,11 @@
 package com.vict.vict_new.sms.service.serviceImpl;
 
+import com.vict.vict_new.exception.UserRegistrationException;
 import com.vict.vict_new.sms.SmsRequestDto;
 import com.vict.vict_new.sms.service.SmsService;
 //import com.vict.vict_new.util.SmSCertificationUtil;
 import com.vict.vict_new.util.SmSCertificationUtil;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.Random;
@@ -36,7 +36,7 @@ public class SmsServiceImpl implements SmsService {
         if(code.equals(smsDto.getSmsCode())){
             codeChk = true;
         }else{
-             codeChk = false;
+            throw UserRegistrationException.certificationFailed();
         }
         return codeChk;
     }

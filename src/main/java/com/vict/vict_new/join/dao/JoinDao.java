@@ -13,8 +13,6 @@ public interface JoinDao {
 
     int insertUser(User user);
 
-    int getNewSeq();
-
     int insertUserManage(UserManage userManage);
 
 }

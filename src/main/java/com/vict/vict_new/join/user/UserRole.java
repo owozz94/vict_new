@@ -1,6 +1,6 @@
 package com.vict.vict_new.join.user;
 
-public enum userRole {
+public enum UserRole {
     ADMIN,
     USER;
 

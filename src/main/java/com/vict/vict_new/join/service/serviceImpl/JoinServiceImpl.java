@@ -6,7 +6,7 @@ import com.vict.vict_new.join.dto.User;
 import com.vict.vict_new.join.dto.UserManage;
 import com.vict.vict_new.join.service.JoinService;
 import com.vict.vict_new.join.user.UserRole;
-import com.vict.vict_new.util.SHA256;
+import com.vict.vict_new.util.PasswordUtil;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,12 +18,25 @@ import org.springframework.transaction.annotation.Transactional;
 public class JoinServiceImpl implements JoinService {
 
     private final JoinDao dao;
-    private final SHA256 sha256;
     private final Logger log = LoggerFactory.getLogger(this.getClass().getSimpleName());
 
     @Override
     public int getEmailExist(String email) {
-        return dao.getEmailExist(email);
+        int emailExist = dao.getEmailExist(email);
+        if(emailExist > 0){
+            throw UserRegistrationException.userEmailAlreadyExists(email);
+        }
+        return emailExist;
+    }
+
+    @Override
+    public int getPhoneExists(String phoneNum) {
+        int phoneExists = dao.getPhoneExist(phoneNum);
+
+        if(phoneExists > 0){
+            throw UserRegistrationException.userPhoneNumAlreadyExists(phoneNum);
+        }
+        return phoneExists;
     }
 
     public boolean isValidPassword(String password){
@@ -31,10 +44,8 @@ public class JoinServiceImpl implements JoinService {
     }
     @Override
     @Transactional
-    public int insertUser(User user) {
-        UserManage userManage = new UserManage();
+    public int insertUser(User user, UserManage userManage) {
 
-        try {
             //패스워드 유효성 검사
             if(!isValidPassword(user.getPassword())){
                 throw UserRegistrationException.invalidPasswordFormat(user.getPassword());
@@ -46,30 +57,28 @@ public class JoinServiceImpl implements JoinService {
                 throw UserRegistrationException.emailAlreadyExists(user.getEmail());
             }else {
                 try {
-                    //시퀀스 생성
-                    int userSeq = dao.getNewSeq();
-                    user.setUserSeq(userSeq);
+                    //유저키 생성
+                    String userKey = PasswordUtil.generateUserKey();
+                    user.setUserKey(userKey);
                     //패스워드 암호화
-                    user.setSalt(sha256.getSalt());
-                    String password = user.getPassword();
-                    String encryption = sha256.Hashing(password.getBytes(), user.getSalt());
-                    user.setPassword(encryption);
-                    userManage.setUserSeq(user.getUserSeq());
+                    user.setPassword(PasswordUtil.hashPassword(user.getPassword()));
+                    userManage.setUserKey(user.getUserKey());
                     userManage.setRole(UserRole.USER);
-                    int insertUserManage = dao.insertUserManage(userManage); //UserManage 받는 부분 필요
+                    int existPhoneNum = dao.getPhoneExist(user.getPhoneNum());
+                    int insertUserManage = dao.insertUserManage(userManage);
                     int insertUser = dao.insertUser(user);
                     //위에 return 값 성공/실패시 검증 로직 필요.
-                    if (insertUserManage <= 0 || insertUser <= 0) {
-                        throw UserRegistrationException.userAlreadyExists();
+                    if (existPhoneNum > 0){
+                        throw UserRegistrationException.userPhoneNumAlreadyExists(user.getPhoneNum());
+                    }
+                    else if (insertUserManage <= 0 || insertUser <= 0) {
+                        throw UserRegistrationException.userAlreadyExists(user);
                     }
                     return 1;
                 }catch (Exception e){
                     log.error("User registration transaction failed. Cause: {}", e.getMessage(), e);
-                    throw e; //트랜잭션 콜백
+                    throw UserRegistrationException.signupFailed(); //트랜잭션 콜백
                 }
             }
-        } catch (Exception e) {
-            throw UserRegistrationException.signupFailed();
-        }
     }
 }

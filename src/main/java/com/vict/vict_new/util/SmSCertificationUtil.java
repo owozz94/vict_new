@@ -1,5 +1,6 @@
 package com.vict.vict_new.util;
 
+import com.vict.vict_new.exception.UserRegistrationException;
 import jakarta.annotation.PostConstruct;
 import net.nurigo.sdk.NurigoApp;
 import net.nurigo.sdk.message.model.Message;
@@ -10,13 +11,13 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class SmSCertificationUtil {
-    @Value("${coolsms.apikey}")
+    @Value("${coolsms.apiKey}")
     private String apiKey;
 
-    @Value("${coolsms.apisecret}")
+    @Value("${coolsms.apiSecret}")
     private String apiSecret;
 
-    @Value("${coolsms.fromnumber}")
+    @Value("${coolsms.fromNumber}")
     private String fromNumber;
 
     DefaultMessageService messageService; //메세지 서비스를 위한 객체
@@ -31,8 +32,12 @@ public class SmSCertificationUtil {
         message.setFrom(fromNumber); //발신자 번호 설정
         message.setTo(to); //수신자 번호 설정
         message.setText("[vict] 본인확인 인증번호 : " +certificationCode); //메시지 내용
+        try {
+            //this.messageService.sendOne(new SingleMessageSendingRequest(message)); //메시지 발송 요청
+        }catch (UserRegistrationException ux){
+            ux.sendSMSCodeFailed();
+        }
 
-      //  this.messageService.sendOne(new SingleMessageSendingRequest(message)); //메시지 발송 요청
     }
 
 

@@ -9,7 +9,7 @@ import java.util.List;
 public interface InquiryDao {
     String getTest(InquiryDto dto);
 
-    List<InquiryDto> selectInquiryList(int userSeq);
+    List<InquiryDto> selectInquiryList(int userKey);
 
     InquiryDto selectInquiry(int inquirySeq);
 

@@ -55,39 +55,6 @@ function selectEmail(){
     $('#email').valid();
 }
 
-//이메일 중복확인
-function isEmailDuplicate(){
-    let email = $('#email').val();
-
-    if(email == ''){
-        alert('이메일을 입력해주세요.');
-        return false;
-    }
-
-    if(!emailValidate(email)){
-        alert('올바른 이메일 형식으로 입력해주세요.');
-        return false;
-    }
-
-    $.ajax({
-        type:'get',
-        url:'join/emailExist/'+email,
-        success:function(result){
-        let message;
-        if(result == 1){
-            message = '이미 가입된 이메일입니다.';
-            $('input[name=emailExtFlag]').attr('value', false);
-            alert(message);
-            return false;
-        }else{
-            $('input[name=emailExtFlag]').attr('value', true);
-            $('#email').attr('disabled','true');
-            $('select[name=emailBox]').attr('disabled', true);
-            $('input[name=emailOrg]').attr('value', email);
-            }
-        }
-    });
-}
 //이메일 정규식
 function emailValidate(email){
     const pattern = /^[A-Za-z0-9_\.\-]+@[A-Za-z0-9\-]+\.[A-za-z0-9\-]+/;
@@ -101,13 +68,21 @@ function allCheck(){
     if($("input[name=all-items]").is(":checked") === true){
         $(".items").prop("checked", true);
         $(".marketing-items").prop("checked", true);
+        $(".marketing-items").val('Y');
     }else{
         $(".items").prop("checked", false);
         $(".marketing-items").prop("checked", false);
+        $(".marketing-items").val('N');
     }
  }
 
 function isCheck(){
+    if(marketingAgreed = $("[name=marketingAgreed]").is(":checked") === true){
+        $(".marketing-items").val('Y');
+    }else{
+        $(".marketing-items").val('N');
+    }
+
     var chkCount = $('input:checkbox:checked').length;
 
     if(chkCount > 3 && $("input[name=all-items]").is(":checked") === false){
@@ -313,15 +288,6 @@ async function phoneCheck(){
                 return false;
             }
     }
-//        error:function(xhr, status, err){
-//            if(xhr.status == 409){
-//                alert('이미 가입된 번호입니다.');
-//            }
-//            else{
-//                alert('error!');
-//            }
-//        }
-//    })
 }
 
 function join(){
@@ -332,8 +298,9 @@ function join(){
         data:join_form,
         url:"/join/signup",
         success:function(result){
-            alert('가입되었습니다.');
+            alert('회원가입이 완료되었습니다.');
             console.log(result);
+            location.replace("/login");
         },
         error:function(xhr, status, err){
             if(xhr.status == 400){
@@ -343,11 +310,11 @@ function join(){
                 alert('인가되지 않은 접근입니다.');
             }
             else if(xhr.status == 409){
-                alert('이미 존재하는 계정입니다.');
+                alert('이미 존재하는 이메일입니다.');
             }
             else{
                 alert('error!');
             }
         }
-    })
+     });
 }

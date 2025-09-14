@@ -5,6 +5,9 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import java.util.Date;
+
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
@@ -15,8 +18,8 @@ public class InquiryDto extends User {
     int inquiryType; //문의 유형
     String title; //제목
     String content; //내용
-    String regtDate; //등록일
     String useYn;  //사용여부
     String questionYn; //답변여부
     String questionDate; //답변일
+    Date lastUpdateTime; //마지막 수정시간
 }

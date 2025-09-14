@@ -74,7 +74,7 @@
                         <input type="checkbox" class="items" th:onClick="isCheck()">
                         <span>서비스 이용약관에 동의합니다. <span class="highlight">(필수)</span></span>
                     </label>
-                    <button type="button" th:onClick="location.href='/terms'">내용보기</button>
+                    <button type="button" th:onClick="location.href='/terms/service'">내용보기</button>
                 </div>
 
                 <div class="terms-item">
@@ -82,14 +82,14 @@
                         <input type="checkbox" class="items" th:onClick="isCheck()">
                         <span>개인정보 수집 및 이용에 동의합니다. <span class="highlight">(필수)</span></span>
                     </label>
-                    <button type="button">내용보기</button>
+                    <button type="button" th:onClick="location.href='/terms/privacy'">내용보기</button>
                 </div>
                 <div class="terms-item">
                     <label>
-                        <input type="checkbox" class="marketing-items" name="marketingAgreed">
+                        <input type="checkbox" class="marketing-items" name="marketingAgreed" th:onClick="isCheck()">
                         <span>이벤트 및 혜택안내 개인정보 수집·이용에 동의합니다. <span class="highlight">(선택)</span></span>
                     </label>
-                    <button type="button">내용보기</button>
+                    <button type="button" th:onClick="location.href='/terms/event'">내용보기</button>
                 </div>
             </div>
             <button type="submit" class="signup-btn" disabled>회원 가입</button>

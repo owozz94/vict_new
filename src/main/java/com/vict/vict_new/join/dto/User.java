@@ -10,7 +10,7 @@ import java.util.Date;
 @Getter
 @Setter
 public class User {
-    int userSeq; /** 유저 시퀀스 */
+    String userKey; /** 유저 시퀀스 */
     @NotBlank(message = "이메일은 필수입니다.")
     String email; /** 이메일 */
     @NotBlank(message = "닉네임은 필수입니다.")
@@ -24,12 +24,11 @@ public class User {
     @NotBlank(message = "핸드폰번호는 필수입니다.")
     String phoneNum; /** 핸드폰번호 */
     String blogUrl; /** 블로그 주소 */
-    Date regDate; /** 회원가입 날짜 */
+    Date regtDate; /** 회원가입 날짜 */
     Date endDate; /** 탈퇴 날짜 */
     Date lastUpdateTime; /** 마지막 수정 시간 */
     Date lastLoginTime; /** 마지막 로그인 시간 */
     String useYn; /** 사용 여부 */
-//    int loginType; /** 로그인 타입 1:일반가입 2:네이버가입 */
+    int loginType; /** 로그인 타입 1:일반가입 2:네이버가입 */
 //    String socialKey; /** 소셜 로그인 키 */
-    String salt; /** ID SALT 값 */
 }
